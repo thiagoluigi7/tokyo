@@ -18,7 +18,7 @@ S_USER="$USER"
 S_HOME="$HOME"
 
 # set the real target user by params
-if [[ -n $1 ]]; then 
+if [[ -n $1 ]]; then
     S_USER="$1"
     S_HOME=`sudo -u "${S_USER}" -i echo '$HOME'`
 fi
@@ -59,7 +59,7 @@ prel-realpath() {
 
 install-via-manager() {
     local package="$1"
-    log.info "[jovial] install package: ${package}"
+    log.info "[tokyo] install package: ${package}"
 
     if is-command brew; then
         sudo -Eu ${S_USER} brew install ${package}
@@ -80,7 +80,7 @@ install-via-manager() {
 
 install.packages() {
     local packages=( $@ )
-    log.info "[jovial] install packages: ${packages[@]}"
+    log.info "[tokyo] install packages: ${packages[@]}"
 
     local package
 
@@ -90,44 +90,44 @@ install.packages() {
 }
 
 install.zsh() {
-    log.info "[jovial] detect whether installed zsh"
+    log.info "[tokyo] detect whether installed zsh"
 
     if [[ "${SHELL}" =~ '/zsh$' ]]; then
-        log.success "[jovial] default shell is zsh, skip to install"
+        log.success "[tokyo] default shell is zsh, skip to install"
         return 0
     fi
 
     if is-command zsh || install.packages zsh; then
-        log.info "[jovial] switch default login shell to zsh"
+        log.info "[tokyo] switch default login shell to zsh"
         chsh -s `command -v zsh` ${S_USER}
         return 0
     else
-        log.error "[ERROR][jovial] cannot find or install zsh, please install zsh manually"
+        log.error "[ERROR][tokyo] cannot find or install zsh, please install zsh manually"
         return 1
     fi
 }
 
 install.ohmyzsh() {
-    log.info "[jovial] detect whether installed oh-my-zsh"
+    log.info "[tokyo] detect whether installed oh-my-zsh"
 
     if [[ -d ${ZSH} && -d ${ZSH_CUSTOM} ]]; then
-        log.success "[jovial] oh-my-zsh detected, skip to install"
+        log.success "[tokyo] oh-my-zsh detected, skip to install"
         return 0
     fi
 
-    log.info "[jovial] this theme base on oh-my-zsh, now will install it"
+    log.info "[tokyo] this theme base on oh-my-zsh, now will install it"
 
     if ! is-command git; then
         install.packages git
     fi
-    
+
     # https://ohmyz.sh/#install
     curl -sSL -H 'Cache-Control: no-cache' https://github.com/ohmyzsh/ohmyzsh/raw/master/tools/install.sh | sudo -Eu ${S_USER} sh    
 }
 
 
 install.zsh-plugins() {
-    log.info "[jovial] install zsh plugins"
+    log.info "[tokyo] install zsh plugins"
 
     local plugin_dir="${ZSH_CUSTOM}/plugins"
 
@@ -138,19 +138,19 @@ install.zsh-plugins() {
     install.packages autojump terminal-notifier source-highlight
 
     if [[ ! -d ${plugin_dir}/zsh-autosuggestions ]]; then
-        log.info "[jovial] install plugin zsh-autosuggestions"
+        log.info "[tokyo] install plugin zsh-autosuggestions"
         sudo -Eu ${S_USER} git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions.git "${plugin_dir}/zsh-autosuggestions"
     fi
 
     if [[ ! -d ${plugin_dir}/zsh-syntax-highlighting ]]; then
-        log.info "[jovial] install plugin zsh-syntax-highlighting"
+        log.info "[tokyo] install plugin zsh-syntax-highlighting"
         sudo -Eu ${S_USER} git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${plugin_dir}/zsh-syntax-highlighting"
     fi
 
-    log.info "[jovial] install plugin zsh-history-enquirer"
-    curl -sSL -H 'Cache-Control: no-cache' https://github.com/zthxxx/zsh-history-enquirer/raw/master/scripts/installer.zsh | sudo -Eu ${S_USER} zsh
+    log.info "[tokyo] install plugin zsh-history-enquirer"
+    curl -sSL -H 'Cache-Control: no-cache' https://github.com/thiagoluigi7/zsh-history-enquirer/raw/master/scripts/installer.zsh | sudo -Eu ${S_USER} zsh
 
-    log.info "[jovial] setup oh-my-zsh plugins in ~/.zshrc"
+    log.info "[tokyo] setup oh-my-zsh plugins in ~/.zshrc"
     local plugins=(
         git
         vscode
@@ -169,7 +169,7 @@ install.zsh-plugins() {
 }
 
 preference-zsh() {
-    log.info "[jovial] preference zsh in ~/.zshrc"
+    log.info "[tokyo] preference zsh in ~/.zshrc"
 
     if is-command brew; then
         perl -i -pe "s/.*HOMEBREW_NO_AUTO_UPDATE.*//gms" $(prel-realpath "${S_HOME}/.zshrc")
@@ -180,10 +180,10 @@ preference-zsh() {
 }
 
 install.theme() {
-    log.info "[jovial] install theme 'jovial'"
+    log.info "[tokyo] install theme 'tokyo'"
 
-    local theme_name="jovial"
-    local git_prefix="https://github.com/zthxxx/${theme_name}/raw/master"
+    local theme_name="tokyo"
+    local git_prefix="https://github.com/thiagoluigi7/${theme_name}/raw/master"
 
     local theme_remote="${git_prefix}/${theme_name}.zsh-theme"
     local plugin_remote="${git_prefix}/${theme_name}.plugin.zsh"
@@ -206,4 +206,4 @@ install.theme
 preference-zsh
 
 
-log.success "[jovial] installed"
+log.success "[tokyo] installed"
