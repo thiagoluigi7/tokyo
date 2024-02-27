@@ -148,7 +148,7 @@ install.zsh-plugins() {
     fi
 
     log.info "[tokyo] install plugin zsh-history-enquirer"
-    curl -sSL -H 'Cache-Control: no-cache' https://github.com/thiagoluigi7/zsh-history-enquirer/raw/master/scripts/installer.zsh | sudo -Eu ${S_USER} zsh
+    curl -sSL -H 'Cache-Control: no-cache' https://github.com/zthxxx/zsh-history-enquirer/raw/master/scripts/installer.zsh | sudo -Eu ${S_USER} zsh
 
     log.info "[tokyo] setup oh-my-zsh plugins in ~/.zshrc"
     local plugins=(
