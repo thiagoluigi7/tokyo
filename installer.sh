@@ -153,6 +153,7 @@ install.zsh-plugins() {
     log.info "[jovial] setup oh-my-zsh plugins in ~/.zshrc"
     local plugins=(
         git
+        vscode
         autojump
         urltools
         bgnotify

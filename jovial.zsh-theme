@@ -1,17 +1,20 @@
+# tokyo.zsh-theme based on
 # jovial.zsh-theme
 # https://github.com/zthxxx/jovial
+# Inspired by
+# https://github.com/JanDeDobbeleer/oh-my-posh/blob/main/themes/tokyo.omp.json
 
 
-export JOVIAL_VERSION='2.5.3'
+export TOKYO_VERSION='1.0.0'
 
 
 # Development code style:
 #
-# use "@jov."" prefix for jovial internal functions
+# use "@tok."" prefix for tokyo internal functions
 # use "kebab-case" style for function names and mapping key
 # use "snake_case" for function's internal variables, and also declare it with "local" mark
 # use "CAPITAL_SNAKE_CASE" for global variables that design for user customization
-# use "snake_case" for global but only used for jovial theme
+# use "snake_case" for global but only used for tokyo theme
 # use indent spaces 4
 
 # https://zsh.sourceforge.io/Doc/Release/Functions.html#Hook-Functions
@@ -22,7 +25,7 @@ zmodload zsh/datetime
 zmodload zsh/zpty
 zmodload zsh/zle
 
-# expand and execute the PROMPT variable 
+# expand and execute the PROMPT variable
 # https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html
 setopt prompt_subst
 
@@ -46,11 +49,11 @@ fi
 typeset -g sgr_reset="%{\e[00m%}"
 
 
-# jovial theme element symbol mapping
+# tokyo theme element symbol mapping
 #
 # (the syntax `typeset -A xxx` is means to declare a `associative-array` in zsh, it's like `dictionary`)
 # more `typeset` syntax see https://zsh.sourceforge.io/Doc/Release/Shell-Builtin-Commands.html
-typeset -gA JOVIAL_SYMBOL=(
+typeset -gA TOKYO_SYMBOL=(
     corner.top    '╭─'
     corner.bottom '╰─'
 
@@ -59,25 +62,28 @@ typeset -gA JOVIAL_SYMBOL=(
 
     ## preset arrows
     # arrow '─>'
-    # arrow '─▶'
-    arrow '─➤'
-    arrow.git-clean '(๑˃̵ᴗ˂̵)و'
-    arrow.git-dirty '(ﾉ˚Д˚)ﾉ'
+    arrow '─▶'
+    arrow '▶'
+    # arrow '─➤'
+    # arrow.git-dirty '(ﾉ˚Д˚)ﾉ'
+    # arrow.git-clean '(๑˃̵ᴗ˂̵)و'
+    arrow.git-dirty '▶'
+    arrow.git-clean '▶'
 )
 
 
-# jovial theme colors mapping
+# tokyo theme colors mapping
 # use `sheet:color` plugin function to see color table
 # https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html#Visual-effects
 # format quickref:
-#   
+#
 #   %F{xxx}         => foreground color (text color)
 #   %K{xxx}         => background color (color-block)
 #   %B              => bold
 #   %U              => underline
-#   ${sgr_reset}    => reset all effect (provide by jovial)
+#   ${sgr_reset}    => reset all effect (provide by tokyo)
 #
-typeset -gA JOVIAL_PALETTE=(
+typeset -gA TOKYO_PALETTE=(
     # hostname
     host '%F{157}'
 
@@ -95,7 +101,7 @@ typeset -gA JOVIAL_PALETTE=(
 
     # virtual env activate prompt for python
     venv '%F{159}'
- 
+
     # current time when prompt render, pin at end-of-line
     time '%F{254}'
 
@@ -119,15 +125,15 @@ typeset -gA JOVIAL_PALETTE=(
     error '%F{203}'
 )
 
-# parts dispaly order from left to right of jovial theme at the first line 
-typeset -ga JOVIAL_PROMPT_ORDER=( host user path dev-env git-info )
+# parts dispaly order from left to right of tokyo theme at the first line
+typeset -ga TOKYO_PROMPT_ORDER=( host user path dev-env git-info )
 
 # prompt parts priority from high to low, for `responsive design`.
 # decide whether to still keep dispaly while terminal width is no enough;
 #
 # the highest priority element will always keep dispaly;
 # `current-time` will always auto detect rest spaces, it's lowest priority
-typeset -ga JOVIAL_PROMPT_PRIORITY=(
+typeset -ga TOKYO_PROMPT_PRIORITY=(
     path
     git-info
     user
@@ -136,21 +142,21 @@ typeset -ga JOVIAL_PROMPT_PRIORITY=(
 )
 
 # pin last command execute elapsed, if the threshold is reached
-typeset -gi JOVIAL_EXEC_THRESHOLD_SECONDS=4
+typeset -gi TOKYO_EXEC_THRESHOLD_SECONDS=4
 
-# prefixes and suffixes of jovial prompt part
+# prefixes and suffixes of tokyo prompt part
 # all values wrapped in `${...}` will be subject to `Prompt-Expansion` during initialization
-typeset -gA JOVIAL_AFFIXES=(
-    host.prefix            '${JOVIAL_PALETTE[normal]}['
+typeset -gA TOKYO_AFFIXES=(
+    host.prefix            '${TOKYO_PALETTE[normal]}['
     # hostname/username use `Prompt-Expansion` syntax in default
     #   https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html
     # but you can override it with simple constant string
     hostname               '${(%):-%m}'
-    host.suffix            '${JOVIAL_PALETTE[normal]}] ${JOVIAL_PALETTE[conj.]}as'
+    host.suffix            '${TOKYO_PALETTE[normal]}] ${TOKYO_PALETTE[conj.]}as'
 
     user.prefix            ' '
     username               '${(%):-%n}'
-    user.suffix            ' ${JOVIAL_PALETTE[conj.]}in'
+    user.suffix            ' ${TOKYO_PALETTE[conj.]}in'
 
     path.prefix            ' '
     current-dir            '%~'
@@ -159,16 +165,16 @@ typeset -gA JOVIAL_AFFIXES=(
     dev-env.prefix         ' '
     dev-env.suffix         ''
 
-    git-info.prefix        ' ${JOVIAL_PALETTE[conj.]}on ${JOVIAL_PALETTE[normal]}('
-    git-info.suffix        '${JOVIAL_PALETTE[normal]})'
+    git-info.prefix        ' ${TOKYO_PALETTE[conj.]}on ${TOKYO_PALETTE[normal]}('
+    git-info.suffix        '${TOKYO_PALETTE[normal]})'
 
-    venv.prefix            ' ${JOVIAL_PALETTE[normal]}('
-    venv.suffix            '${JOVIAL_PALETTE[normal]})'
+    venv.prefix            ' ${TOKYO_PALETTE[normal]}('
+    venv.suffix            '${TOKYO_PALETTE[normal]})'
 
-    exec-elapsed.prefix    ' ${JOVIAL_PALETTE[elapsed]}~'
+    exec-elapsed.prefix    ' ${TOKYO_PALETTE[elapsed]}~'
     exec-elapsed.suffix    ' '
 
-    exit-code.prefix       ' ${JOVIAL_PALETTE[exit.mark]}exit:'
+    exit-code.prefix       ' ${TOKYO_PALETTE[exit.mark]}exit:'
     exit-code.suffix       ' '
 
     current-time.prefix    ' '
@@ -177,11 +183,11 @@ typeset -gA JOVIAL_AFFIXES=(
 
 
 
-@jov.iscommand() { [[ -e ${commands[$1]} ]] }
+@tok.iscommand() { [[ -e ${commands[$1]} ]] }
 
 # https://superuser.com/questions/380772/removing-ansi-color-codes-from-text-stream
 # https://www.refining-linux.org/archives/52-ZSH-Gem-18-Regexp-search-and-replace-on-parameters.html
-@jov.unstyle-len() {
+@tok.unstyle-len() {
     # use (%) for expand `prompt` format like color `%F{123}` or username `%n`
     # https://zsh.sourceforge.io/Doc/Release/Expansion.html#Parameter-Expansion-Flags
     # https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html#Prompt-Expansion
@@ -220,10 +226,10 @@ typeset -gA JOVIAL_AFFIXES=(
 }
 
 
-# @jov.rev-parse-find(filename:string, path:string, output:boolean)
+# @tok.rev-parse-find(filename:string, path:string, output:boolean)
 # reverse from path to root wanna find the targe file
 # output: whether show the file path
-@jov.rev-parse-find() {
+@tok.rev-parse-find() {
     local target="$1"
     local current_path="${2:-${PWD}}"
     local whether_output=${3:-false}
@@ -263,22 +269,22 @@ typeset -gA JOVIAL_AFFIXES=(
 
 
 # map for { job-name -> file-descriptor }
-typeset -gA jovial_async_jobs=()
+typeset -gA tokyo_async_jobs=()
 # map for { file-descriptor -> job-name }
-typeset -gA jovial_async_fds=()
+typeset -gA tokyo_async_fds=()
 # map for { job-name -> callback }
-typeset -gA jovial_async_callbacks=()
+typeset -gA tokyo_async_callbacks=()
 
 # tiny util for run async job with callback via zpty and zle
 # inspired by https://github.com/mafredri/zsh-async
 #
-# @jov.async <job-name> <handler-func> <callback-func>
+# @tok.async <job-name> <handler-func> <callback-func>
 #
 # `handler-func`  cannot handle with not any param
 # `callback-func` can only receive one param: <output-data>
-# 
+#
 # https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html
-@jov.async() {
+@tok.async() {
     local job_name=$1
     local handler=$2
     local callback=$3
@@ -287,23 +293,23 @@ typeset -gA jovial_async_callbacks=()
     # by believe all zpty job will clear itself by trigger in callback
     # it's an alternative to`zpty -t ${job_name}`
     # because zpty test job done not means the job cleared, they cannot create again
-    if [[ -n ${jovial_async_jobs[${job_name}]} ]]; then
+    if [[ -n ${tokyo_async_jobs[${job_name}]} ]]; then
         return
     fi
 
     # async run as non-blocking output subprocess in zpty
-    zpty -b ${job_name} @jov.zpty-worker ${handler}
-    # REPLY a file-descriptor which was opened by the lost zpty job 
+    zpty -b ${job_name} @tok.zpty-worker ${handler}
+    # REPLY a file-descriptor which was opened by the lost zpty job
     local -i fd=${REPLY}
 
-    jovial_async_jobs[${job_name}]=${fd}
-    jovial_async_fds[${fd}]=${job_name}
-    jovial_async_callbacks[${job_name}]=${callback}
+    tokyo_async_jobs[${job_name}]=${fd}
+    tokyo_async_fds[${fd}]=${job_name}
+    tokyo_async_callbacks[${job_name}]=${callback}
 
-    zle -F ${fd} @jov.zle-callback-handler
+    zle -F ${fd} @tok.zle-callback-handler
 }
 
-@jov.zpty-worker() {
+@tok.zpty-worker() {
     local handler=$1
 
     ${handler}
@@ -313,12 +319,12 @@ typeset -gA jovial_async_callbacks=()
 }
 
 # callback for zle, forward zpty output to really job callback
-@jov.zle-callback-handler() {
+@tok.zle-callback-handler() {
     local -i fd=$1
     local data=''
 
-    local job_name=${jovial_async_fds[${fd}]}
-    local callback=${jovial_async_callbacks[${job_name}]}
+    local job_name=${tokyo_async_fds[${fd}]}
+    local callback=${tokyo_async_callbacks[${job_name}]}
 
     # assume the job only have one-line output
     # so if the handler called, we can read all message at this time,
@@ -327,9 +333,9 @@ typeset -gA jovial_async_callbacks=()
     zpty -r ${job_name} data
     zpty -d ${job_name}
 
-    unset "jovial_async_jobs[${job_name}]"
-    unset "jovial_async_fds[${fd}]"
-    unset "jovial_async_callbacks[${job_name}]"
+    unset "tokyo_async_jobs[${job_name}]"
+    unset "tokyo_async_fds[${fd}]"
+    unset "tokyo_async_callbacks[${job_name}]"
 
     # forward callback, and trimming any leading/trailing whitespace same as command s  ubstitution
     # `[[:graph:]]` is glob for whitespace
@@ -339,64 +345,64 @@ typeset -gA jovial_async_callbacks=()
 }
 
 
-typeset -g jovial_prompt_part_changed=false
+typeset -g tokyo_prompt_part_changed=false
 
-@jov.infer-prompt-rerender() {
+@tok.infer-prompt-rerender() {
     local has_changed="$1"
 
     if [[ ${has_changed} == true ]]; then
-        jovial_prompt_part_changed=true
+        tokyo_prompt_part_changed=true
     fi
 
     # only rerender if changed and all async jobs done
-    if [[ ${jovial_prompt_part_changed} == true ]] && (( ! ${(k)#jovial_async_jobs} )); then
-        jovial_prompt_part_changed=false
+    if [[ ${tokyo_prompt_part_changed} == true ]] && (( ! ${(k)#tokyo_async_jobs} )); then
+        tokyo_prompt_part_changed=false
 
         # only call zle rerender while prompt prepared
-        if (( jovial_prompt_run_count > 1 )); then
+        if (( tokyo_prompt_run_count > 1 )); then
             zle reset-prompt
         fi
     fi
 }
 
-zle -N @jov.infer-prompt-rerender
+zle -N @tok.infer-prompt-rerender
 
 
 
 # variables for git prompt
-typeset -g jovial_rev_git_dir=""
-typeset -g jovial_is_git_dirty=false
+typeset -g tokyo_rev_git_dir=""
+typeset -g tokyo_is_git_dirty=false
 
-@jov.chpwd-git-dir-hook() {
-    # it's the same as  jovial_rev_git_dir=`\git rev-parse --git-dir 2>/dev/null`
+@tok.chpwd-git-dir-hook() {
+    # it's the same as  tokyo_rev_git_dir=`\git rev-parse --git-dir 2>/dev/null`
     # but better performance due to reduce subprocess call
 
-    local project_root_dir="$(@jov.rev-parse-find .git '' true)"
+    local project_root_dir="$(@tok.rev-parse-find .git '' true)"
 
     if [[ -n ${project_root_dir} ]]; then
-        jovial_rev_git_dir="${project_root_dir}/.git"
+        tokyo_rev_git_dir="${project_root_dir}/.git"
     else
-        jovial_rev_git_dir=""
+        tokyo_rev_git_dir=""
     fi
 }
 
-add-zsh-hook chpwd @jov.chpwd-git-dir-hook
-@jov.chpwd-git-dir-hook
+add-zsh-hook chpwd @tok.chpwd-git-dir-hook
+@tok.chpwd-git-dir-hook
 
 
-typeset -gi jovial_prompt_run_count=0
+typeset -gi tokyo_prompt_run_count=0
 
-# jovial prompt element value
-typeset -gA jovial_parts=() jovial_part_lengths=()
-typeset -gA jovial_previous_parts=() jovial_previous_lengths=()
+# tokyo prompt element value
+typeset -gA tokyo_parts=() tokyo_part_lengths=()
+typeset -gA tokyo_previous_parts=() tokyo_previous_lengths=()
 
-@jov.reset-prompt-parts() {
-    for key in ${(k)jovial_parts}; do
-        jovial_previous_parts[${key}]="${jovial_parts[${key}]}"
-        jovial_previous_lengths[${key}]="${jovial_part_lengths[${key}]}"
+@tok.reset-prompt-parts() {
+    for key in ${(k)tokyo_parts}; do
+        tokyo_previous_parts[${key}]="${tokyo_parts[${key}]}"
+        tokyo_previous_lengths[${key}]="${tokyo_part_lengths[${key}]}"
     done
 
-    jovial_parts=(
+    tokyo_parts=(
         exec-elapsed    ''
         exit-code       ''
         margin-line     ''
@@ -410,7 +416,7 @@ typeset -gA jovial_previous_parts=() jovial_previous_lengths=()
         venv            ''
     )
 
-    jovial_part_lengths=(
+    tokyo_part_lengths=(
         host            0
         user            0
         path            0
@@ -420,89 +426,89 @@ typeset -gA jovial_previous_parts=() jovial_previous_lengths=()
     )
 }
 
-# store calculated lengths of `JOVIAL_AFFIXES` part
-typeset -gA jovial_affix_lengths=()
+# store calculated lengths of `TOKYO_AFFIXES` part
+typeset -gA tokyo_affix_lengths=()
 
-@jov.init-affix() {
+@tok.init-affix() {
     local key result
-    for key in ${(k)JOVIAL_AFFIXES}; do
-        eval "JOVIAL_AFFIXES[${key}]"=\""${JOVIAL_AFFIXES[${key}]}"\"
+    for key in ${(k)TOKYO_AFFIXES}; do
+        eval "TOKYO_AFFIXES[${key}]"=\""${TOKYO_AFFIXES[${key}]}"\"
         # remove `.prefix`, `.suffix`
         # `xxx.prefix`` -> `xxx`
         local part="${key/%.(prefix|suffix)/}"
 
         local -i affix_len
-        @jov.unstyle-len "${JOVIAL_AFFIXES[${key}]}" affix_len
+        @tok.unstyle-len "${TOKYO_AFFIXES[${key}]}" affix_len
 
-        jovial_affix_lengths[${part}]=$((
-            ${jovial_affix_lengths[${part}]:-0}
+        tokyo_affix_lengths[${part}]=$((
+            ${tokyo_affix_lengths[${part}]:-0}
             + affix_len
         ))
     done
 }
 
-@jov.set-typing-pointer() {
-    jovial_parts[typing]="${JOVIAL_PALETTE[typing]}"
+@tok.set-typing-pointer() {
+    tokyo_parts[typing]="${TOKYO_PALETTE[typing]}"
 
-    if [[ -n ${jovial_rev_git_dir} ]]; then
-        if [[ ${jovial_is_git_dirty} == false ]]; then
-            jovial_parts[typing]+="${JOVIAL_SYMBOL[arrow.git-clean]}"
+    if [[ -n ${tokyo_rev_git_dir} ]]; then
+        if [[ ${tokyo_is_git_dirty} == false ]]; then
+            tokyo_parts[typing]+="${TOKYO_SYMBOL[arrow.git-clean]}"
         else
-            jovial_parts[typing]+="${JOVIAL_SYMBOL[arrow.git-dirty]}"
+            tokyo_parts[typing]+="${TOKYO_SYMBOL[arrow.git-dirty]}"
         fi
     else
-        jovial_parts[typing]+="${JOVIAL_SYMBOL[arrow]}"
+        tokyo_parts[typing]+="${TOKYO_SYMBOL[arrow]}"
     fi
 }
 
-@jov.set-venv-info() {
+@tok.set-venv-info() {
     if [[ -z ${VIRTUAL_ENV} ]]; then
-        jovial_parts[venv]=''
+        tokyo_parts[venv]=''
     else
-        jovial_parts[venv]="${JOVIAL_AFFIXES[venv.prefix]}${JOVIAL_PALETTE[venv]}$(basename ${VIRTUAL_ENV})${JOVIAL_AFFIXES[venv.suffix]}"
+        tokyo_parts[venv]="${TOKYO_AFFIXES[venv.prefix]}${TOKYO_PALETTE[venv]}$(basename ${VIRTUAL_ENV})${TOKYO_AFFIXES[venv.suffix]}"
     fi
 }
 
 # https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html
-@jov.set-host-name() {
-    jovial_parts[host]="${JOVIAL_AFFIXES[hostname]}"
-    jovial_part_lengths[host]=$((
-        ${#jovial_parts[host]}
-        + ${jovial_affix_lengths[host]}
+@tok.set-host-name() {
+    tokyo_parts[host]="${TOKYO_AFFIXES[hostname]}"
+    tokyo_part_lengths[host]=$((
+        ${#tokyo_parts[host]}
+        + ${tokyo_affix_lengths[host]}
     ))
 
-    jovial_parts[host]="${JOVIAL_AFFIXES[host.prefix]}${JOVIAL_PALETTE[host]}${jovial_parts[host]}${JOVIAL_AFFIXES[host.suffix]}"
+    tokyo_parts[host]="${TOKYO_AFFIXES[host.prefix]}${TOKYO_PALETTE[host]}${tokyo_parts[host]}${TOKYO_AFFIXES[host.suffix]}"
 }
 
-@jov.set-user-name() {
-    jovial_parts[user]="${JOVIAL_AFFIXES[username]}"
+@tok.set-user-name() {
+    tokyo_parts[user]="${TOKYO_AFFIXES[username]}"
 
-    jovial_part_lengths[user]=$((
-        ${#jovial_parts[user]}
-        + ${jovial_affix_lengths[user]}
+    tokyo_part_lengths[user]=$((
+        ${#tokyo_parts[user]}
+        + ${tokyo_affix_lengths[user]}
     ))
 
-    local name_color="${JOVIAL_PALETTE[user]}"
+    local name_color="${TOKYO_PALETTE[user]}"
     if [[ ${UID} == 0 || ${USER} == 'root' ]]; then
-        name_color="${JOVIAL_PALETTE[root]}"
+        name_color="${TOKYO_PALETTE[root]}"
     fi
 
-    jovial_parts[user]="${JOVIAL_AFFIXES[user.prefix]}${name_color}${jovial_parts[user]}${JOVIAL_AFFIXES[user.suffix]}"
+    tokyo_parts[user]="${TOKYO_AFFIXES[user.prefix]}${name_color}${tokyo_parts[user]}${TOKYO_AFFIXES[user.suffix]}"
 }
 
-@jov.set-current-dir() {
-    jovial_parts[path]="${(%):-${JOVIAL_AFFIXES[current-dir]}}"
+@tok.set-current-dir() {
+    tokyo_parts[path]="${(%):-${TOKYO_AFFIXES[current-dir]}}"
 
-    jovial_part_lengths[path]=$((
-        ${#jovial_parts[path]}
-        + ${jovial_affix_lengths[path]}
+    tokyo_part_lengths[path]=$((
+        ${#tokyo_parts[path]}
+        + ${tokyo_affix_lengths[path]}
     ))
 
-    jovial_parts[path]="${JOVIAL_AFFIXES[path.prefix]}${JOVIAL_PALETTE[path]}${jovial_parts[path]}${JOVIAL_AFFIXES[path.suffix]}"
+    tokyo_parts[path]="${TOKYO_AFFIXES[path.prefix]}${TOKYO_PALETTE[path]}${tokyo_parts[path]}${TOKYO_AFFIXES[path.suffix]}"
 }
 
 
-@jov.align-previous-right() {
+@tok.align-previous-right() {
     # References:
     #
     # CSI ref: https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_sequences
@@ -531,7 +537,7 @@ typeset -gA jovial_affix_lengths=()
     eval ${store_var}=${(q)result}
 }
 
-@jov.align-right() {
+@tok.align-right() {
     local str="$1"
     local len=$2
     local store_var="$3"
@@ -545,13 +551,13 @@ typeset -gA jovial_affix_lengths=()
 
 
 # pin the last command execute elapsed and exit code at previous line end
-@jov.pin-execute-info() {
+@tok.pin-execute-info() {
     local -i exec_seconds="${1:-0}"
     local -i exit_code="${2:-0}"
 
     local -i pin_length=0
 
-    if (( JOVIAL_EXEC_THRESHOLD_SECONDS >= 0)) && (( exec_seconds >= JOVIAL_EXEC_THRESHOLD_SECONDS )); then
+    if (( TOKYO_EXEC_THRESHOLD_SECONDS >= 0)) && (( exec_seconds >= TOKYO_EXEC_THRESHOLD_SECONDS )); then
         local -i seconds=$(( exec_seconds % 60 ))
         local -i minutes=$(( exec_seconds / 60 % 60 ))
         local -i hours=$(( exec_seconds / 3600 ))
@@ -565,52 +571,52 @@ typeset -gA jovial_affix_lengths=()
         # join array with 1 space
         local elapsed="${(j.:.)humanize}"
 
-        jovial_parts[exec-elapsed]="${sgr_reset}${JOVIAL_AFFIXES[exec-elapsed.prefix]}${JOVIAL_PALETTE[elapsed]}${elapsed}${JOVIAL_AFFIXES[exec-elapsed.suffix]}"
-        pin_length+=$(( ${jovial_affix_lengths[exec-elapsed]} + ${#elapsed} ))
+        tokyo_parts[exec-elapsed]="${sgr_reset}${TOKYO_AFFIXES[exec-elapsed.prefix]}${TOKYO_PALETTE[elapsed]}${elapsed}${TOKYO_AFFIXES[exec-elapsed.suffix]}"
+        pin_length+=$(( ${tokyo_affix_lengths[exec-elapsed]} + ${#elapsed} ))
     fi
 
     if (( exit_code != 0 )); then
-        jovial_parts[exit-code]="${sgr_reset}${JOVIAL_AFFIXES[exit-code.prefix]}${JOVIAL_PALETTE[exit.code]}${exit_code}${JOVIAL_AFFIXES[exit-code.suffix]}"
-        pin_length+=$(( ${jovial_affix_lengths[exit-code]} + ${#exit_code} ))
+        tokyo_parts[exit-code]="${sgr_reset}${TOKYO_AFFIXES[exit-code.prefix]}${TOKYO_PALETTE[exit.code]}${exit_code}${TOKYO_AFFIXES[exit-code.suffix]}"
+        pin_length+=$(( ${tokyo_affix_lengths[exit-code]} + ${#exit_code} ))
     fi
-    
+
     if (( pin_length > 0 )); then
-        local pin_message="${jovial_parts[exec-elapsed]}${jovial_parts[exit-code]}"
-        @jov.align-previous-right "${pin_message}" ${pin_length} pin_message
+        local pin_message="${tokyo_parts[exec-elapsed]}${tokyo_parts[exit-code]}"
+        @tok.align-previous-right "${pin_message}" ${pin_length} pin_message
         print -P "${pin_message}"
     fi
 }
 
 
-@jov.set-date-time() {
+@tok.set-date-time() {
     # trimming suffix trailing whitespace
     # donot print trailing whitespace for better interaction while terminal width in narrowing
-    local suffix="${(MS)JOVIAL_AFFIXES[current-time.suffix]##*[[:graph:]]}"
-    local current_time="${JOVIAL_AFFIXES[current-time.prefix]}${JOVIAL_PALETTE[time]}${(%):-%D{%H:%M:%S\}}${suffix}"
+    local suffix="${(MS)TOKYO_AFFIXES[current-time.suffix]##*[[:graph:]]}"
+    local current_time="${TOKYO_AFFIXES[current-time.prefix]}${TOKYO_PALETTE[time]}${(%):-%D{%H:%M:%S\}}${suffix}"
     # 8 is fixed lenght of datatime format `hh:mm:ss`
-    jovial_part_lengths[current-time]=$(( 8 + ${jovial_affix_lengths[current-time]} ))
-    @jov.align-right "${current_time}" ${jovial_part_lengths[current-time]} 'jovial_parts[current-time]'
+    tokyo_part_lengths[current-time]=$(( 8 + ${tokyo_affix_lengths[current-time]} ))
+    @tok.align-right "${current_time}" ${tokyo_part_lengths[current-time]} 'tokyo_parts[current-time]'
 }
 
 
 
-@jov.prompt-node-version() {
-    if @jov.rev-parse-find "package.json"; then
-        if @jov.iscommand node; then
-            local node_prompt_prefix="${JOVIAL_PALETTE[conj.]}using "
+@tok.prompt-node-version() {
+    if @tok.rev-parse-find "package.json"; then
+        if @tok.iscommand node; then
+            local node_prompt_prefix="${TOKYO_PALETTE[conj.]}using "
             local node_prompt="%F{120}node `\node -v`"
         else
-            local node_prompt_prefix="${JOVIAL_PALETTE[normal]}[${JOVIAL_PALETTE[error]}need "
-            local node_prompt="Nodejs${JOVIAL_PALETTE[normal]}]"
+            local node_prompt_prefix="${TOKYO_PALETTE[normal]}[${TOKYO_PALETTE[error]}need "
+            local node_prompt="Nodejs${TOKYO_PALETTE[normal]}]"
         fi
         echo "${node_prompt_prefix}${node_prompt}"
     fi
 }
 
-@jov.prompt-golang-version() {
-    if @jov.rev-parse-find "go.mod"; then
-        if @jov.iscommand go; then
-            local go_prompt_prefix="${JOVIAL_PALETTE[conj.]}using "
+@tok.prompt-golang-version() {
+    if @tok.rev-parse-find "go.mod"; then
+        if @tok.iscommand go; then
+            local go_prompt_prefix="${TOKYO_PALETTE[conj.]}using "
             # go version go1.7.4 linux/amd64
             local go_version=`go version`
             if [[ ${go_version} =~ ' go([0-9]+\.[0-9]+\.[0-9]+) ' ]]; then
@@ -620,120 +626,120 @@ typeset -gA jovial_affix_lengths=()
             fi
             local go_prompt="%F{086}Golang ${go_version}"
         else
-            local go_prompt_prefix="${JOVIAL_PALETTE[normal]}[${JOVIAL_PALETTE[error]}need "
-            local go_prompt="Golang${JOVIAL_PALETTE[normal]}]"
+            local go_prompt_prefix="${TOKYO_PALETTE[normal]}[${TOKYO_PALETTE[error]}need "
+            local go_prompt="Golang${TOKYO_PALETTE[normal]}]"
         fi
         echo "${go_prompt_prefix}${go_prompt}"
     fi
 }
 
 # http://php.net/manual/en/reserved.constants.php
-@jov.prompt-php-version() {
-    if @jov.rev-parse-find "composer.json"; then
-        if @jov.iscommand php; then
-            local php_prompt_prefix="${JOVIAL_PALETTE[conj.]}using "
+@tok.prompt-php-version() {
+    if @tok.rev-parse-find "composer.json"; then
+        if @tok.iscommand php; then
+            local php_prompt_prefix="${TOKYO_PALETTE[conj.]}using "
             local php_prompt="%F{105}php `\php -r 'echo PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION . "." . PHP_RELEASE_VERSION . "\n";'`"
         else
-            local php_prompt_prefix="${JOVIAL_PALETTE[normal]}[${JOVIAL_PALETTE[error]}need "
-            local php_prompt="php${JOVIAL_PALETTE[normal]}]"
+            local php_prompt_prefix="${TOKYO_PALETTE[normal]}[${TOKYO_PALETTE[error]}need "
+            local php_prompt="php${TOKYO_PALETTE[normal]}]"
         fi
         echo "${php_prompt_prefix}${php_prompt}"
     fi
 }
 
-@jov.prompt-python-version() {
-    local python_prompt_prefix="${JOVIAL_PALETTE[conj.]}using "
+@tok.prompt-python-version() {
+    local python_prompt_prefix="${TOKYO_PALETTE[conj.]}using "
 
-    if [[ -n ${VIRTUAL_ENV} ]] && @jov.rev-parse-find "venv"; then
-        local python_prompt="%F{123}`$(@jov.rev-parse-find venv '' true)/venv/bin/python --version 2>&1`"
+    if [[ -n ${VIRTUAL_ENV} ]] && @tok.rev-parse-find "venv"; then
+        local python_prompt="%F{123}`$(@tok.rev-parse-find venv '' true)/venv/bin/python --version 2>&1`"
         echo "${python_prompt_prefix}${python_prompt}"
         return 0
     fi
 
-    if @jov.rev-parse-find "requirements.txt"; then
-        if @jov.iscommand python; then
+    if @tok.rev-parse-find "requirements.txt"; then
+        if @tok.iscommand python; then
             local python_prompt="%F{123}`\python --version 2>&1`"
-        elif @jov.iscommand python3; then
+        elif @tok.iscommand python3; then
             local python_prompt="%F{123}`\python3 --version 2>&1`"
         else
-            python_prompt_prefix="${JOVIAL_PALETTE[normal]}[${JOVIAL_PALETTE[error]}need "
-            local python_prompt="Python${JOVIAL_PALETTE[normal]}]"
+            python_prompt_prefix="${TOKYO_PALETTE[normal]}[${TOKYO_PALETTE[error]}need "
+            local python_prompt="Python${TOKYO_PALETTE[normal]}]"
         fi
         echo "${python_prompt_prefix}${python_prompt}"
     fi
 }
 
-typeset -ga JOVIAL_DEV_ENV_DETECT_FUNCS=(
-    @jov.prompt-node-version
-    @jov.prompt-golang-version
-    @jov.prompt-python-version
-    @jov.prompt-php-version
+typeset -ga TOKYO_DEV_ENV_DETECT_FUNCS=(
+    @tok.prompt-node-version
+    @tok.prompt-golang-version
+    @tok.prompt-python-version
+    @tok.prompt-php-version
 )
 
-@jov.dev-env-detect() {
-    for segment_func in ${JOVIAL_DEV_ENV_DETECT_FUNCS[@]}; do
+@tok.dev-env-detect() {
+    for segment_func in ${TOKYO_DEV_ENV_DETECT_FUNCS[@]}; do
         local segment=`${segment_func}`
-        if [[ -n ${segment} ]]; then 
+        if [[ -n ${segment} ]]; then
             echo "${segment}"
             break
         fi
     done
 }
 
-@jov.set-dev-env-info() {
+@tok.set-dev-env-info() {
     local result="$1"
     local has_changed=false
 
     if [[ -z ${result} ]]; then
-        if [[ -n ${jovial_previous_parts[dev-env]} ]]; then
-            jovial_parts[dev-env]=''
-            jovial_part_lengths[dev-env]=0
+        if [[ -n ${tokyo_previous_parts[dev-env]} ]]; then
+            tokyo_parts[dev-env]=''
+            tokyo_part_lengths[dev-env]=0
             has_changed=true
         fi
 
-        @jov.infer-prompt-rerender ${has_changed}
+        @tok.infer-prompt-rerender ${has_changed}
         return
     fi
 
-    jovial_parts[dev-env]="${JOVIAL_AFFIXES[dev-env.prefix]}${result}${JOVIAL_AFFIXES[dev-env.suffix]}"
+    tokyo_parts[dev-env]="${TOKYO_AFFIXES[dev-env.prefix]}${result}${TOKYO_AFFIXES[dev-env.suffix]}"
 
     local -i result_len
-    @jov.unstyle-len "${result}" result_len
+    @tok.unstyle-len "${result}" result_len
 
-    jovial_part_lengths[dev-env]=$((
+    tokyo_part_lengths[dev-env]=$((
         result_len
-        + ${jovial_affix_lengths[dev-env]}
+        + ${tokyo_affix_lengths[dev-env]}
     ))
 
-    if [[ ${jovial_parts[dev-env]} != ${jovial_previous_parts[dev-env]} ]]; then
+    if [[ ${tokyo_parts[dev-env]} != ${tokyo_previous_parts[dev-env]} ]]; then
         has_changed=true
     fi
 
-    @jov.infer-prompt-rerender ${has_changed}
+    @tok.infer-prompt-rerender ${has_changed}
 }
 
 
-@jov.sync-dev-env-detect() {
+@tok.sync-dev-env-detect() {
     local -i output_fd=$1
 
     local dev_env="$(<& ${output_fd})"
     exec {output_fd}>& -
 
-    @jov.set-dev-env-info "${dev_env}"
+    @tok.set-dev-env-info "${dev_env}"
 }
 
-@jov.async-dev-env-detect() {
+@tok.async-dev-env-detect() {
     # use cached prompt part for render, and try to update as async
 
-    jovial_parts[dev-env]="${jovial_previous_parts[dev-env]}"
-    jovial_part_lengths[dev-env]="${jovial_previous_lengths[dev-env]}"
+    tokyo_parts[dev-env]="${tokyo_previous_parts[dev-env]}"
+    tokyo_part_lengths[dev-env]="${tokyo_previous_lengths[dev-env]}"
 
-    @jov.async 'dev-env' @jov.dev-env-detect @jov.set-dev-env-info
+    @tok.async 'dev-env' @tok.dev-env-detect @tok.set-dev-env-info
 }
 
 # return `true` for dirty
 # return `false` for clean
-@jov.judge-git-dirty() {
+@tok.judge-git-dirty() {
     local git_status
     local -a flags
     flags=('--porcelain')
@@ -748,13 +754,13 @@ typeset -ga JOVIAL_DEV_ENV_DETECT_FUNCS=(
     fi
 }
 
-@jov.git-action-prompt() {
-    # always depend on ${jovial_rev_git_dir} path is existed
+@tok.git-action-prompt() {
+    # always depend on ${tokyo_rev_git_dir} path is existed
 
     local action=''
     local rebase_process=''
-    local rebase_merge="${jovial_rev_git_dir}/rebase-merge"
-    local rebase_apply="${jovial_rev_git_dir}/rebase-apply"
+    local rebase_merge="${tokyo_rev_git_dir}/rebase-merge"
+    local rebase_apply="${tokyo_rev_git_dir}/rebase-apply"
 
     if [[ -d ${rebase_merge} ]]; then
         if [[ -f ${rebase_merge}/interactive ]]; then
@@ -782,13 +788,13 @@ typeset -ga JOVIAL_DEV_ENV_DETECT_FUNCS=(
         local rebase_step="$(< ${rebase_merge}/next)"
         local rebase_total="$(< ${rebase_merge}/last)"
         rebase_process="${rebase_step}/${rebase_total}"
-    elif [[ -f ${jovial_rev_git_dir}/MERGE_HEAD ]]; then
+    elif [[ -f ${tokyo_rev_git_dir}/MERGE_HEAD ]]; then
         action="MERGING"
-    elif [[ -f ${jovial_rev_git_dir}/CHERRY_PICK_HEAD ]]; then
+    elif [[ -f ${tokyo_rev_git_dir}/CHERRY_PICK_HEAD ]]; then
         action="CHERRY-PICKING"
-    elif [[ -f ${jovial_rev_git_dir}/REVERT_HEAD ]]; then
+    elif [[ -f ${tokyo_rev_git_dir}/REVERT_HEAD ]]; then
         action="REVERTING"
-    elif [[ -f ${jovial_rev_git_dir}/BISECT_LOG ]]; then
+    elif [[ -f ${tokyo_rev_git_dir}/BISECT_LOG ]]; then
         action="BISECTING"
     fi
 
@@ -802,8 +808,8 @@ typeset -ga JOVIAL_DEV_ENV_DETECT_FUNCS=(
     echo "${action}"
 }
 
-@jov.git-branch() {
-    # always depend on ${jovial_rev_git_dir} path is existed
+@tok.git-branch() {
+    # always depend on ${tokyo_rev_git_dir} path is existed
 
     local ref
     ref="$(\git symbolic-ref HEAD 2> /dev/null)" \
@@ -817,20 +823,20 @@ typeset -ga JOVIAL_DEV_ENV_DETECT_FUNCS=(
 
 
 # use `exec` to parallel run commands and capture stdout into file descriptor
-#   @jov.set-git-info [true|false]
-# first param is whether git is dirty or not (`true` or `false`), 
+#   @tok.set-git-info [true|false]
+# first param is whether git is dirty or not (`true` or `false`),
 # if first param is not set, will try to read by exec
-@jov.set-git-info() {
+@tok.set-git-info() {
     local is_dirty="$1"
 
     local dirty_fd branch_fd action_fd
 
     if [[ -z ${is_dirty} ]]; then
-        exec {dirty_fd}<> <(@jov.judge-git-dirty)
+        exec {dirty_fd}<> <(@tok.judge-git-dirty)
     fi
 
-    exec {branch_fd}<> <(@jov.git-branch)
-    exec {action_fd}<> <(@jov.git-action-prompt)
+    exec {branch_fd}<> <(@tok.git-branch)
+    exec {action_fd}<> <(@tok.git-action-prompt)
 
     # read and close file descriptors
     local git_branch="$(<& ${branch_fd})"
@@ -844,7 +850,7 @@ typeset -ga JOVIAL_DEV_ENV_DETECT_FUNCS=(
     fi
 
     local git_state='' state_color='' git_dirty_status=''
- 
+
     if [[ ${is_dirty} == true ]]; then
         git_state='dirty'
         state_color='error'
@@ -853,107 +859,107 @@ typeset -ga JOVIAL_DEV_ENV_DETECT_FUNCS=(
         state_color='success'
     fi
 
-    git_dirty_status="${JOVIAL_PALETTE[${state_color}]}${JOVIAL_SYMBOL[git.${git_state}]}"
+    git_dirty_status="${TOKYO_PALETTE[${state_color}]} ${TOKYO_SYMBOL[git.${git_state}]}"
 
-    jovial_parts[git-info]="${JOVIAL_AFFIXES[git-info.prefix]}${JOVIAL_PALETTE[git]}${git_branch}${git_action}${JOVIAL_AFFIXES[git-info.suffix]}${git_dirty_status}"
+    tokyo_parts[git-info]="${TOKYO_AFFIXES[git-info.prefix]}${TOKYO_PALETTE[git]}${git_branch}${git_action}${TOKYO_AFFIXES[git-info.suffix]}${git_dirty_status}"
 
-    jovial_part_lengths[git-info]=$((
-        ${#JOVIAL_SYMBOL[git.${git_state}]}
-        + ${jovial_affix_lengths[git-info]}
+    tokyo_part_lengths[git-info]=$((
+        ${#TOKYO_SYMBOL[git.${git_state}]}
+        + ${tokyo_affix_lengths[git-info]}
         + ${#git_branch}
         + ${#git_action}
     ))
 
     local has_changed=false
 
-    if [[ ${jovial_parts[git-info]} != ${jovial_previous_parts[git-info]} ]]; then
+    if [[ ${tokyo_parts[git-info]} != ${tokyo_previous_parts[git-info]} ]]; then
         has_changed=true
     fi
 
-    # `jovial_is_git_dirty` is global variable that `true` or `false`
-    jovial_is_git_dirty="${is_dirty}"
+    # `tokyo_is_git_dirty` is global variable that `true` or `false`
+    tokyo_is_git_dirty="${is_dirty}"
 
     # set typing-pointer due to git_dirty state maybe changed
-    @jov.set-typing-pointer
+    @tok.set-typing-pointer
 
-    @jov.infer-prompt-rerender ${has_changed}
+    @tok.infer-prompt-rerender ${has_changed}
 }
 
 
-@jov.sync-git-check() {
-    if [[ -z ${jovial_rev_git_dir} ]]; then return; fi
+@tok.sync-git-check() {
+    if [[ -z ${tokyo_rev_git_dir} ]]; then return; fi
 
-    @jov.set-git-info
+    @tok.set-git-info
 }
 
-@jov.async-git-check() {
-    if [[ -z ${jovial_rev_git_dir} ]]; then return; fi
+@tok.async-git-check() {
+    if [[ -z ${tokyo_rev_git_dir} ]]; then return; fi
 
     # use cached prompt part for render, and try to update as async
 
-    jovial_parts[git-info]="${jovial_previous_parts[git-info]}"
-    jovial_part_lengths[git-info]="${jovial_previous_lengths[git-info]}"
+    tokyo_parts[git-info]="${tokyo_previous_parts[git-info]}"
+    tokyo_part_lengths[git-info]="${tokyo_previous_lengths[git-info]}"
 
-    @jov.async 'git-info' @jov.judge-git-dirty @jov.set-git-info
+    @tok.async 'git-info' @tok.judge-git-dirty @tok.set-git-info
 }
 
 # `EPOCHSECONDS` is setup in zsh/datetime module
 # https://zsh.sourceforge.io/Doc/Release/Zsh-Modules.html#The-zsh_002fdatetime-Module
-typeset -gi jovial_exec_timestamp=0
-@jov.exec-timestamp() {
-    jovial_exec_timestamp=${EPOCHSECONDS}
+typeset -gi tokyo_exec_timestamp=0
+@tok.exec-timestamp() {
+    tokyo_exec_timestamp=${EPOCHSECONDS}
 }
-add-zsh-hook preexec @jov.exec-timestamp
+add-zsh-hook preexec @tok.exec-timestamp
 
-@jov.set-margin-line() {
+@tok.set-margin-line() {
     # donot print empty line if terminal height less than 12 lines when prompt initial load
-    if (( jovial_prompt_run_count == 1 )) && (( LINES <= 12 )); then
+    if (( tokyo_prompt_run_count == 1 )) && (( LINES <= 12 )); then
         return
     fi
 
-    jovial_parts[margin-line]='\n'
+    tokyo_parts[margin-line]='\n'
 }
 
-@jov.prompt-prepare() {
+@tok.prompt-prepare() {
     local -i exit_code=$?
     local -i exec_seconds=0
 
-    if (( jovial_exec_timestamp > 0 )); then
-        exec_seconds=$(( EPOCHSECONDS - jovial_exec_timestamp ))
-        jovial_exec_timestamp=0
+    if (( tokyo_exec_timestamp > 0 )); then
+        exec_seconds=$(( EPOCHSECONDS - tokyo_exec_timestamp ))
+        tokyo_exec_timestamp=0
     fi
 
-    jovial_prompt_run_count+=1
+    tokyo_prompt_run_count+=1
 
-    @jov.reset-prompt-parts
+    @tok.reset-prompt-parts
 
-    if (( jovial_prompt_run_count == 1 )); then
-        @jov.init-affix
-        
+    if (( tokyo_prompt_run_count == 1 )); then
+        @tok.init-affix
+
         local -i dev_env_fd
-        exec {dev_env_fd}<> <(@jov.dev-env-detect)
-        @jov.sync-git-check
-        @jov.sync-dev-env-detect ${dev_env_fd}
+        exec {dev_env_fd}<> <(@tok.dev-env-detect)
+        @tok.sync-git-check
+        @tok.sync-dev-env-detect ${dev_env_fd}
     else
-        @jov.async-dev-env-detect
-        @jov.async-git-check
+        @tok.async-dev-env-detect
+        @tok.async-git-check
     fi
 
-    @jov.pin-execute-info ${exec_seconds} ${exit_code}
-    @jov.set-margin-line
-    @jov.set-host-name
-    @jov.set-user-name
-    @jov.set-current-dir
-    @jov.set-typing-pointer
-    @jov.set-venv-info
+    @tok.pin-execute-info ${exec_seconds} ${exit_code}
+    @tok.set-margin-line
+    @tok.set-host-name
+    @tok.set-user-name
+    @tok.set-current-dir
+    @tok.set-typing-pointer
+    @tok.set-venv-info
 }
 
-add-zsh-hook precmd @jov.prompt-prepare
+add-zsh-hook precmd @tok.prompt-prepare
 
 
 
-@jovial-prompt() {
-    local -i total_length=${#JOVIAL_SYMBOL[corner.top]}
+@tokyo-prompt() {
+    local -i total_length=${#TOKYO_SYMBOL[corner.top]}
     local -A prompts=(
         margin-line ''
         host ''
@@ -969,41 +975,41 @@ add-zsh-hook precmd @jov.prompt-prepare
     local prompt_is_emtpy=true
     local key
 
-    for key in ${JOVIAL_PROMPT_PRIORITY[@]}; do
-        local -i part_length=${jovial_part_lengths[${key}]}
+    for key in ${TOKYO_PROMPT_PRIORITY[@]}; do
+        local -i part_length=${tokyo_part_lengths[${key}]}
 
         # keep padding right 1 space
         if (( total_length + part_length + 1 > COLUMNS )) && [[ ${prompt_is_emtpy} == false ]] ; then
             break
         fi
-        
+
         prompt_is_emtpy=false
 
         total_length+=${part_length}
-        prompts[${key}]="${sgr_reset}${jovial_parts[${key}]}"
+        prompts[${key}]="${sgr_reset}${tokyo_parts[${key}]}"
     done
 
     # always auto detect rest spaces to float current time
-    @jov.set-date-time
-    if (( total_length + ${jovial_part_lengths[current-time]} <= COLUMNS )); then
-        prompts[current-time]="${sgr_reset}${jovial_parts[current-time]}"
+    @tok.set-date-time
+    if (( total_length + ${tokyo_part_lengths[current-time]} <= COLUMNS )); then
+        prompts[current-time]="${sgr_reset}${tokyo_parts[current-time]}"
     fi
 
-    prompts[margin-line]="${sgr_reset}${jovial_parts[margin-line]}"
-    prompts[typing]="${sgr_reset}${jovial_parts[typing]}"
-    prompts[venv]="${sgr_reset}${jovial_parts[venv]}"
+    prompts[margin-line]="${sgr_reset}${tokyo_parts[margin-line]}"
+    prompts[typing]="${sgr_reset}${tokyo_parts[typing]}"
+    prompts[venv]="${sgr_reset}${tokyo_parts[venv]}"
 
     local -a ordered_parts=()
-    for key in ${JOVIAL_PROMPT_ORDER[@]}; do
+    for key in ${TOKYO_PROMPT_ORDER[@]}; do
         ordered_parts+="${prompts[${key}]}"
     done
 
-    local corner_top="${prompts[margin-line]}${JOVIAL_PALETTE[normal]}${JOVIAL_SYMBOL[corner.top]}"
-    local corner_bottom="${sgr_reset}${JOVIAL_PALETTE[normal]}${JOVIAL_SYMBOL[corner.bottom]}"
+    local corner_top="${prompts[margin-line]}${TOKYO_PALETTE[normal]}${TOKYO_SYMBOL[corner.top]}"
+    local corner_bottom="${sgr_reset}${TOKYO_PALETTE[normal]}${TOKYO_SYMBOL[corner.bottom]}"
 
     echo "${corner_top}${(j..)ordered_parts}${prompts[current-time]}"
     echo "${corner_bottom}${prompts[typing]}${prompts[venv]} ${sgr_reset}"
 }
 
 
-PROMPT='$(@jovial-prompt)'
+PROMPT='$(@tokyo-prompt)'
